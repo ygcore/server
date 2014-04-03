@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LoginServer.Network
+namespace GameServer.Network.LoginServer
 {
-    public class Opcode
+    public class LSOpcode
     {
         public static Dictionary<short, Type> Recv = new Dictionary<short, Type>();
         public static Dictionary<Type, short> Send = new Dictionary<Type, short>();

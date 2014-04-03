@@ -48,8 +48,13 @@
     <Compile Include="Config\Configuration.cs" />
     <Compile Include="Config\DatabaseStruct.cs" />
     <Compile Include="Config\NetworkStruct.cs" />
+    <Compile Include="Config\SettingStruct.cs" />
     <Compile Include="GameServer.cs" />
-    <Compile Include="Network\LoginServer\LSNetworkClient.cs" />
+    <Compile Include="Network\LoginServer\LSARecvPacket.cs" />
+    <Compile Include="Network\LoginServer\LSASendPacket.cs" />
+    <Compile Include="Network\LoginServer\LSClient.cs" />
+    <Compile Include="Network\LoginServer\LSOpcode.cs" />
+    <Compile Include="Network\LoginServer\Send\GSP_RegistServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +68,9 @@
     <None Include="Config\network.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Config\setting.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +78,9 @@
       <Project>{2cc06d57-6a68-473d-a7ed-d19ca8381b57}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Network\LoginServer\Recv\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

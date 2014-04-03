@@ -14,17 +14,21 @@ namespace GameServer.Config
 
         private static IConfig _DBCfg = new IniConfigSource("Config/database.ini").Configs["database"];
         private static IConfig _NWCfg = new IniConfigSource("Config/network.ini").Configs["network"];
+        private static IConfig _STCfg = new IniConfigSource("Config/setting.ini").Configs["setting"];
 
         private static IConfigSource _CNSource = new IniConfigSource("Config/channel.ini");
 
         public static DatabaseStruct Database;
         public static NetworkStruct Network;
+        public static SettingStruct Setting;
+
         public List<ChannelStruct> Channels = new List<ChannelStruct>(10);
 
         public Configuration()
         {
             Console.WriteLine("Load All Configuration...");
             Console.WriteLine("-------------------------------------------");
+
             Database = new DatabaseStruct(
                 _DBCfg.GetString("db.mongo.url"),
                 _DBCfg.GetString("db.mongo.name")
@@ -39,6 +43,17 @@ namespace GameServer.Config
                 _NWCfg.GetInt("login.port")
             );
             Log.Info("Loaded Network Configuration");
+
+            Setting = new SettingStruct(
+                _STCfg.GetInt("server.id"),
+                _STCfg.GetString("server.name"),
+                _STCfg.GetBoolean("debuging"),
+                _STCfg.GetInt("rate.exp"),
+                _STCfg.GetInt("rate.money"),
+                _STCfg.GetInt("rate.sp")
+            );
+            Log.Info("Loaded Setting Configuration");
+
             Console.WriteLine("\n-------------------------------------------\n");
 
             Console.WriteLine("Load Channels Configuration...");

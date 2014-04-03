@@ -49,8 +49,12 @@
     <Compile Include="Config\NetworkStruct.cs" />
     <Compile Include="Config\SettingStruct.cs" />
     <Compile Include="LoginServer.cs" />
+    <Compile Include="Network\ARecvPacket.cs" />
+    <Compile Include="Network\ASendPacket.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\ClientManager.cs" />
+    <Compile Include="Network\GameServer\GSARecvPacket.cs" />
+    <Compile Include="Network\GameServer\GSASendPacket.cs" />
     <Compile Include="Network\GameServer\GSClient.cs" />
     <Compile Include="Network\GameServer\GSClientManager.cs" />
     <Compile Include="Network\GameServer\GSNetworkFactory.cs" />
@@ -77,6 +81,10 @@
       <Project>{2cc06d57-6a68-473d-a7ed-d19ca8381b57}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Network\GameServer\Recv\" />
+    <Folder Include="Network\GameServer\Send\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

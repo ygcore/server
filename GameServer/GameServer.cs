@@ -23,7 +23,7 @@ namespace GameServer
 
             Configuration.GetInstance();
 
-            LSNetworkClient.GetInstance();
+            LSClient.GetInstance();
 
             sw.Stop();
 

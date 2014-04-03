@@ -1,4 +1,5 @@
 ﻿using Common.Utilities;
+using LoginServer.Config;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -63,7 +64,6 @@ namespace LoginServer.Network.GameServer
             {
                 GSClientManager.GetInstance().RemoveClient(this);
                 Log.Error("Lost connection from gameserver");
-                //Log.ErrorException("OnReceiveCallback", ex);
             }
         }
 
@@ -73,15 +73,61 @@ namespace LoginServer.Network.GameServer
             _stream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
         }
 
+        public void SendPacket(GSASendPacket packet)
+        {
+            packet._Client = this;
+
+            if (!Opcode.Send.ContainsKey(packet.GetType()))
+            {
+                Log.Warn("UNKNOWN GS packet opcode: {0}", packet.GetType().Name);
+                return;
+            }
+
+            try
+            {
+                packet.WriteH(GSOpcode.Send[packet.GetType()]); // opcode
+                packet.WriteH(0); // packet len
+                packet.Write();
+
+                byte[] Data = packet.ToByteArray();
+                BitConverter.GetBytes((short)(Data.Length - 4)).CopyTo(Data, 2);
+
+                if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Can't send GS packet: {0}", GetType().Name);
+                Log.WarnException("GSASendPacket", ex);
+                return;
+            }
+        }
+
         private void WriteCallback(IAsyncResult result)
         {
             _stream.EndWrite(result);
         }
 
-        private void handlePacket(byte[] data)
+        private void handlePacket(byte[] Data)
         {
-            Log.Debug("Recv Handle: {0}", data.FormatHex());
-            Send(Encoding.UTF8.GetBytes("TEST SEND BACK"));
+            //Log.Debug("Recv Handle: {0}", Data.FormatHex());
+
+            short opcode = BitConverter.ToInt16(new byte[2] { Data[0], Data[1] }, 0);
+
+            if (GSOpcode.Recv.ContainsKey(opcode))
+            {
+                ((GSARecvPacket)Activator.CreateInstance(GSOpcode.Recv[opcode])).execute(this, Data);
+            }
+            else
+            {
+                string opCodeLittleEndianHex = BitConverter.GetBytes(opcode).ToHex();
+                Log.Debug("Unknown LS Opcode: 0x{0}{1} [{2}]",
+                                 opCodeLittleEndianHex.Substring(2),
+                                 opCodeLittleEndianHex.Substring(0, 2),
+                                 Data.Length);
+
+                Log.Debug("Data:\n{0}", Data.FormatHex());
+            }
         }
     }
 }
