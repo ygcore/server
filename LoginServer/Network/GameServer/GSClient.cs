@@ -92,7 +92,8 @@ namespace LoginServer.Network.GameServer
                 byte[] Data = packet.ToByteArray();
                 BitConverter.GetBytes((short)(Data.Length - 4)).CopyTo(Data, 2);
 
-                if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                //if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                _stream = _client.GetStream();
                 _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
             }
             catch (Exception ex)
@@ -121,7 +122,7 @@ namespace LoginServer.Network.GameServer
             else
             {
                 string opCodeLittleEndianHex = BitConverter.GetBytes(opcode).ToHex();
-                Log.Debug("Unknown LS Opcode: 0x{0}{1} [{2}]",
+                Log.Debug("Unknown GS Opcode: 0x{0}{1} [{2}]",
                                  opCodeLittleEndianHex.Substring(2),
                                  opCodeLittleEndianHex.Substring(0, 2),
                                  Data.Length);

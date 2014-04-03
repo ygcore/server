@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.9.0\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.9.0\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="Nini">
       <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
     </Reference>
@@ -48,7 +54,11 @@
     <Compile Include="Config\DatabaseStruct.cs" />
     <Compile Include="Config\NetworkStruct.cs" />
     <Compile Include="Config\SettingStruct.cs" />
+    <Compile Include="Database\MdbAccount.cs" />
     <Compile Include="LoginServer.cs" />
+    <Compile Include="Model\Account\Account.cs" />
+    <Compile Include="Model\Server\ChannelStruct.cs" />
+    <Compile Include="Model\Server\ServerStruct.cs" />
     <Compile Include="Network\ARecvPacket.cs" />
     <Compile Include="Network\ASendPacket.cs" />
     <Compile Include="Network\Client.cs" />
@@ -59,8 +69,10 @@
     <Compile Include="Network\GameServer\GSClientManager.cs" />
     <Compile Include="Network\GameServer\GSNetworkFactory.cs" />
     <Compile Include="Network\GameServer\GSOpcode.cs" />
+    <Compile Include="Network\GameServer\Recv\GRP_RequestRegistServer.cs" />
     <Compile Include="Network\NetworkFactory.cs" />
     <Compile Include="Network\Opcode.cs" />
+    <Compile Include="Network\Recv\RP_RequestLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +95,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Network\GameServer\Recv\" />
     <Folder Include="Network\GameServer\Send\" />
+    <Folder Include="Network\Send\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

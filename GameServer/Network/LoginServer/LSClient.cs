@@ -24,6 +24,7 @@ namespace GameServer.Network.LoginServer
 
         public LSClient()
         {
+            LSOpcode.Init();
             _client = new TcpClient();
             _client.BeginConnect(Configuration.Network.LoginIp, Configuration.Network.LoginPort, ConnectCallback, null);
         }
@@ -32,7 +33,6 @@ namespace GameServer.Network.LoginServer
         {
             try
             {
-                Log.Debug("Connected to LoginServer");
                 _client.EndConnect(result);
 
                 SendPacket(new GSP_RegistServer());
@@ -102,7 +102,8 @@ namespace GameServer.Network.LoginServer
                 byte[] Data = packet.ToByteArray();
                 BitConverter.GetBytes((short)(Data.Length - 4)).CopyTo(Data, 2);
 
-                if (Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                //if (Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                _stream = _client.GetStream();
                 _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
             }
             catch (Exception ex)

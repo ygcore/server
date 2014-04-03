@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoginServer.Network.GameServer.Recv;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace LoginServer.Network.GameServer
 
         public static void Init()
         {
-
+            Recv.Add(unchecked((short)0x0001), typeof(GRP_RequestRegistServer));
         }
     }
 }

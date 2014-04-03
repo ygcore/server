@@ -60,9 +60,25 @@ namespace LoginServer.Network
             new Thread(new ThreadStart(BeginRead)).Start();
         }
 
-        private void handlePacket(byte[] data)
+        private void handlePacket(byte[] Data)
         {
-            Log.Debug("Recv Handle: {0}", data.FormatHex());
+            Log.Debug("Recv Handle: {0}", Data.FormatHex());
+            short opcode = BitConverter.ToInt16(new byte[2] { Data[0], Data[1] }, 0);
+
+            if (Opcode.Recv.ContainsKey(opcode))
+            {
+                ((ARecvPacket)Activator.CreateInstance(Opcode.Recv[opcode])).execute(this, Data);
+            }
+            else
+            {
+                string opCodeLittleEndianHex = BitConverter.GetBytes(opcode).ToHex();
+                Log.Debug("Unknown Opcode: 0x{0}{1} [{2}]",
+                                 opCodeLittleEndianHex.Substring(2),
+                                 opCodeLittleEndianHex.Substring(0, 2),
+                                 Data.Length);
+
+                Log.Debug("Data:\n{0}", Data.FormatHex());
+            }
         }
     }
 }

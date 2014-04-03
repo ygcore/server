@@ -1,4 +1,5 @@
 ﻿using LoginServer.Config;
+using LoginServer.Model.Server;
 using LoginServer.Network;
 using LoginServer.Network.GameServer;
 using System;
@@ -13,6 +14,8 @@ namespace LoginServer
 {
     internal class LoginServer
     {
+        public static List<ServerStruct> ServerList = new List<ServerStruct>();
+
         static void Main(string[] args)
         {
             Console.Title = "----===== YGCore LoginServer =====----";

@@ -95,11 +95,8 @@ namespace LoginServer.Network
             string str = "";
             try
             {
-                str = Encoding.Default.GetString(this._buffer, this._offset, this._buffer.Length - this._offset);
-                int length = str.IndexOf(char.MinValue);
-                if (length != -1)
-                    str = str.Substring(0, length);
-                this._offset += str.Length + 1;
+                int len = ReadH();
+                str = ReadS(len); ;
             }
             catch (Exception ex)
             {

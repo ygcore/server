@@ -1,8 +1,6 @@
-﻿using System;
+﻿using GameServer.Network.LoginServer.Send;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Network.LoginServer
 {
@@ -13,7 +11,7 @@ namespace GameServer.Network.LoginServer
 
         public static void Init()
         {
-
+            Send.Add(typeof(GSP_RegistServer), unchecked((short)0x0001));
         }
     }
 }
