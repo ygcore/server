@@ -11,27 +11,14 @@ namespace GameServer.Network.LoginServer.Send
 {
     public class GSResUserOnlineCount : LSASendPacket
     {
-        protected List<ServerStruct> ServerList;
-
-        public GSResUserOnlineCount(List<ServerStruct> list)
+        public GSResUserOnlineCount()
         {
-            ServerList = list;
-
-            // todo get channel online count assign to server list
 
         }
 
         protected internal override void Write()
         {
-            byte[] buff;
-            using (var ms = new MemoryStream())
-            {
-                Serializer.Serialize(ms, ServerList);
-                buff = ms.ToArray();
-            }
-
-            WriteH(buff.Length);
-            WriteB(buff);
+            
         }
     }
 }

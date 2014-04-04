@@ -13,11 +13,7 @@ namespace LoginServer.Network.GameServer.Recv
     {
         protected internal override void Read()
         {
-            int len = ReadH();
-            using (var ms = new MemoryStream(ReadB(len)))
-            {
-                LoginServer.ServerList = Serializer.Deserialize<List<ServerStruct>>(ms);
-            }
+
         }
 
         protected internal override void Run()

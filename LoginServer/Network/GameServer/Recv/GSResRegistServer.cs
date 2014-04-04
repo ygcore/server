@@ -3,7 +3,7 @@ using Common.Utilities;
 
 namespace LoginServer.Network.GameServer.Recv
 {
-    public class GSReqRegistServer : GSARecvPacket
+    public class GSResRegistServer : GSARecvPacket
     {
         protected int serverId;
         protected internal override void Read()
@@ -11,17 +11,19 @@ namespace LoginServer.Network.GameServer.Recv
             serverId = ReadD();
             string serverName = ReadS();
             string serverAddr = ReadS();
-
-            ServerStruct server = new ServerStruct(serverId, serverName, serverAddr);
+            bool useAkey = (ReadC() == 1) ? true : false;
+            ServerStruct server = new ServerStruct(serverId, serverName, serverAddr, useAkey);
 
             int channel_count = ReadD();
             for(int i = 0; i < channel_count; i++)
             {
+                int id = ReadH();
                 string name = ReadS();
                 int port = ReadH();
                 int type = ReadC();
                 int max = ReadD();
-                ChannelStruct channel = new ChannelStruct(name, port, type, max);
+                int curr = ReadD();
+                ChannelStruct channel = new ChannelStruct(id, name, port, type, max, curr);
                 server.Channels.Add(channel);
             }
 

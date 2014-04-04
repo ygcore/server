@@ -1,4 +1,5 @@
-﻿using Common.Utilities;
+﻿using Common.Model.Server;
+using Common.Utilities;
 using Nini.Config;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace GameServer.Config
             Setting = new SettingStruct(
                 _STCfg.GetInt("server.id"),
                 _STCfg.GetString("server.name"),
+                _STCfg.GetBoolean("server.Akey"),
                 _STCfg.GetBoolean("debuging"),
                 _STCfg.GetInt("rate.exp"),
                 _STCfg.GetInt("rate.money"),
@@ -60,18 +62,20 @@ namespace GameServer.Config
             Console.WriteLine("-------------------------------------------");
             for(int i = 0; i < 10; i++)
             {
-                var cConfig = _CNSource.Configs["channel" + (i + 1)];
+                int id = (i + 1);
+                var cConfig = _CNSource.Configs["channel" + id];
                 if (cConfig == null)
                     continue;
 
                 Channels.Add(new ChannelStruct(
-                    cConfig.GetInt("channel.port"),
+                    id,
                     cConfig.GetString("channel.name"),
+                    cConfig.GetInt("channel.port"),
                     cConfig.GetInt("channel.type"),
                     cConfig.GetInt("channel.max")
                 ));
 
-                Log.Info("Channel: {0} Loaded", (i + 1));
+                Log.Info("Channel: {0} Loaded", id);
             }
             Console.WriteLine("\n-------------------------------------------\n");
         }

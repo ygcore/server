@@ -10,8 +10,8 @@ namespace LoginServer.Network.Send
 
             foreach(ServerStruct server in LoginServer.ServerList)
             {
-                WriteH(server.ServerId);
-                WriteS(server.ServerName);
+                WriteH(server.Id);
+                WriteS(server.Name);
                 WriteH(0);
                 WriteH(0);
                 WriteH(1);

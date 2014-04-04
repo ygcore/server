@@ -1,28 +1,25 @@
-﻿using ProtoBuf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Common.Model.Server
 {
-    [ProtoContract]
     public struct ServerStruct
     {
-        [ProtoMember(1)]
-        public int ServerId;
+        public int Id;
 
-        [ProtoMember(2)]
-        public string ServerName;
+        public string Name;
 
-        [ProtoMember(3)]
-        public string ServerAddress;
+        public string Address;
 
-        [ProtoMember(4)]
+        public bool IsUseAtKey;
+
         public List<ChannelStruct> Channels;
 
-        public ServerStruct(int id, string name, string addr)
+        public ServerStruct(int id, string name, string addr, bool usekey)
         {
-            ServerId = id;
-            ServerName = name;
-            ServerAddress = addr;
+            Id = id;
+            Name = name;
+            Address = addr;
+            IsUseAtKey = usekey;
             Channels = new List<ChannelStruct>();
         }
     }

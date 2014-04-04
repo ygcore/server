@@ -17,16 +17,7 @@ namespace LoginServer.Network.GameServer.Send
 
         protected internal override void Write()
         {
-            var data = LoginServer.ServerList;
 
-            byte[] buff;
-            using (var ms = new MemoryStream())
-            {
-                Serializer.Serialize(ms, data);
-                buff = ms.ToArray();
-            }
-
-            WriteB(buff);
         }
     }
 }
