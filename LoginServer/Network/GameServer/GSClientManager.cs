@@ -47,5 +47,10 @@ namespace LoginServer.Network.GameServer
 
             this._Clients.Remove(loginClient);
         }
+
+        public List<GSClient> GetAllGSClient()
+        {
+            return _Clients;
+        }
     }
 }

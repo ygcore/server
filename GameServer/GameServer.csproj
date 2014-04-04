@@ -41,6 +41,9 @@
     <Reference Include="Nini">
       <HintPath>..\packages\Trove.Nini.1.1.0.0\lib\net20\Nini.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -60,7 +63,9 @@
     <Compile Include="Network\LoginServer\LSASendPacket.cs" />
     <Compile Include="Network\LoginServer\LSClient.cs" />
     <Compile Include="Network\LoginServer\LSOpcode.cs" />
-    <Compile Include="Network\LoginServer\Send\GSP_RegistServer.cs" />
+    <Compile Include="Network\LoginServer\Recv\LSReqUserOnlineCount.cs" />
+    <Compile Include="Network\LoginServer\Send\GSReqRegistServer.cs" />
+    <Compile Include="Network\LoginServer\Send\GSResUserOnlineCount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,9 +90,7 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Network\LoginServer\Recv\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

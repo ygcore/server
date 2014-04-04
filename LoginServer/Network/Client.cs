@@ -1,4 +1,5 @@
 ﻿using Common.Utilities;
+using LoginServer.Model.Account;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace LoginServer.Network
         public TcpClient _client;
         public NetworkStream _stream;
         private byte[] _buffer;
+
+        public Account _Account;
 
         public Client(TcpClient client)
         {
@@ -58,6 +61,48 @@ namespace LoginServer.Network
                 handlePacket(data);
 
             new Thread(new ThreadStart(BeginRead)).Start();
+        }
+
+        public void Send(byte[] bytes)
+        {
+            _stream = _client.GetStream();
+            _stream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
+        }
+
+        public void SendPacket(ASendPacket packet)
+        {
+            packet._Client = this;
+
+            if (!Opcode.Send.ContainsKey(packet.GetType()))
+            {
+                Log.Warn("UNKNOWN GS packet opcode: {0}", packet.GetType().Name);
+                return;
+            }
+
+            try
+            {
+                packet.WriteH(Opcode.Send[packet.GetType()]); // opcode
+                packet.WriteH(0); // packet len
+                packet.Write();
+
+                byte[] Data = packet.ToByteArray();
+                BitConverter.GetBytes((short)(Data.Length - 4)).CopyTo(Data, 2);
+
+                //if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                _stream = _client.GetStream();
+                _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Can't send GS packet: {0}", GetType().Name);
+                Log.WarnException("GSASendPacket", ex);
+                return;
+            }
+        }
+
+        private void WriteCallback(IAsyncResult result)
+        {
+            _stream.EndWrite(result);
         }
 
         private void handlePacket(byte[] Data)

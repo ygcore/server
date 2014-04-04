@@ -27,6 +27,7 @@ namespace LoginServer.Network
         {
             try
             {
+                Opcode.Init();
                 NetworkListener = new TcpListener(IPAddress.Parse(Configuration.Network.PublicIp), Configuration.Network.PublicPort);
                 NetworkListener.Start();
                 Log.Info("Server listening clients at {0}:{1}...", ((IPEndPoint)NetworkListener.LocalEndpoint).Address, Configuration.Network.PublicPort);

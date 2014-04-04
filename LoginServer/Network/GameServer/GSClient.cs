@@ -77,7 +77,7 @@ namespace LoginServer.Network.GameServer
         {
             packet._Client = this;
 
-            if (!Opcode.Send.ContainsKey(packet.GetType()))
+            if (!GSOpcode.Send.ContainsKey(packet.GetType()))
             {
                 Log.Warn("UNKNOWN GS packet opcode: {0}", packet.GetType().Name);
                 return;

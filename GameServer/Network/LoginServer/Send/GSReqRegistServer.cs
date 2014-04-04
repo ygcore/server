@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameServer.Network.LoginServer.Send
 {
-    public class GSP_RegistServer : LSASendPacket
+    public class GSReqRegistServer : LSASendPacket
     {
         protected internal override void Write()
         {

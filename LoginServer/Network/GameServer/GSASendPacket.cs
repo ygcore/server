@@ -60,9 +60,11 @@ namespace LoginServer.Network.GameServer
 
         protected internal void WriteS(string value)
         {
-            if (value != null)
-                WriteB(Encoding.Default.GetBytes(value));
-            WriteH((short)0);
+            if (value == null)
+                return;
+
+            WriteH((short)value.Length);
+            WriteB(Encoding.Default.GetBytes(value));
         }
 
         protected internal void WriteS(string name, int count)

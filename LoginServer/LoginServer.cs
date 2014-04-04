@@ -1,5 +1,5 @@
-﻿using LoginServer.Config;
-using LoginServer.Model.Server;
+﻿using Common.Model.Server;
+using LoginServer.Config;
 using LoginServer.Network;
 using LoginServer.Network.GameServer;
 using System;

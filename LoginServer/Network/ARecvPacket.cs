@@ -24,7 +24,7 @@ namespace LoginServer.Network
         {
             _Client = Client;
             _buffer = buffer;
-            _offset = 2;
+            _offset = 4;
             Read();
             Run();
         }

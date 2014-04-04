@@ -35,7 +35,7 @@ namespace GameServer.Network.LoginServer
             {
                 _client.EndConnect(result);
 
-                SendPacket(new GSP_RegistServer());
+                SendPacket(new GSReqRegistServer());
             }
             catch
             {

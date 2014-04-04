@@ -1,4 +1,5 @@
-﻿using GameServer.Network.LoginServer.Send;
+﻿using GameServer.Network.LoginServer.Recv;
+using GameServer.Network.LoginServer.Send;
 using System;
 using System.Collections.Generic;
 
@@ -11,7 +12,11 @@ namespace GameServer.Network.LoginServer
 
         public static void Init()
         {
-            Send.Add(typeof(GSP_RegistServer), unchecked((short)0x0001));
+            //Recv.Add(unchecked((short)0x0002), typeof(LSReqUserOnlineCount));
+
+
+            Send.Add(typeof(GSReqRegistServer), unchecked((short)0x0001));
+            Send.Add(typeof(GSResUserOnlineCount), unchecked((short)0x1001));
         }
     }
 }

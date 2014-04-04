@@ -116,6 +116,14 @@ namespace GameServer.Network.LoginServer
             Log.Trace("Ignore {0} bytes", in_offset);
         }
 
+        protected internal int Length
+        {
+            get
+            {
+                return BitConverter.ToInt16(new byte[2] { _buffer[2], _buffer[3] }, 0);
+            }
+        }
+
         protected internal abstract void Read();
 
         protected internal abstract void Run();

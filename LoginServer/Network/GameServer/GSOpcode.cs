@@ -1,9 +1,7 @@
 ﻿using LoginServer.Network.GameServer.Recv;
+using LoginServer.Network.GameServer.Send;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LoginServer.Network.GameServer
 {
@@ -14,7 +12,11 @@ namespace LoginServer.Network.GameServer
 
         public static void Init()
         {
-            Recv.Add(unchecked((short)0x0001), typeof(GRP_RequestRegistServer));
+            Recv.Add(unchecked((short)0x0001), typeof(GSReqRegistServer));
+            Recv.Add(unchecked((short)0x1001), typeof(GSResUserOnlineCount));
+
+
+            Send.Add(typeof(LSReqUserOnlineCount), unchecked((short)0x0002));
         }
     }
 }

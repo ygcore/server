@@ -1,14 +1,9 @@
-﻿using Common.Utilities;
-using LoginServer.Model.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Common.Model.Server;
+using Common.Utilities;
 
 namespace LoginServer.Network.GameServer.Recv
 {
-    public class GRP_RequestRegistServer : GSARecvPacket
+    public class GSReqRegistServer : GSARecvPacket
     {
         protected int serverId;
         protected internal override void Read()
