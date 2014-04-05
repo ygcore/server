@@ -1,21 +1,19 @@
 ﻿using Common.Utilities;
-using LoginServer.Config;
 using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
-namespace LoginServer.Network.GameServer
+namespace GameServer.Network
 {
-    public class GSClient
+    public class Client
     {
         public EndPoint _address;
         public TcpClient _client;
         public NetworkStream _stream;
         private byte[] _buffer;
 
-        public GSClient(TcpClient client)
+        public Client(TcpClient client)
         {
             _client = client;
             _stream = client.GetStream();
@@ -26,7 +24,7 @@ namespace LoginServer.Network.GameServer
 
         private void close()
         {
-            GameServerManager.GetInstance().RemoveClient(this);
+            ClientManager.GetInstance().RemoveClient(this);
             this._stream.Dispose();
         }
 
@@ -42,29 +40,27 @@ namespace LoginServer.Network.GameServer
             }
             catch (Exception ex)
             {
-                Log.ErrorException("[GSClient]: BeginRead() Exception", ex);
+                Log.ErrorException("[Client]: BeginRead() Exception", ex);
                 close();
             }
         }
 
         private void OnReceiveCallback(IAsyncResult ar)
         {
-            try
-            {
-                int length = _stream.EndRead(ar);
-                byte[] data = new byte[length];
-                Buffer.BlockCopy(_buffer, 0, data, 0, length);
+            int length = _stream.EndRead(ar);
+            byte[] data = new byte[length - 4];
+            Buffer.BlockCopy(_buffer, 2, data, 0, length - 4);
 
-                if (data.Length >= 2)
-                    handlePacket(data);
+            string bytesString = BitConverter.ToString(data).Replace("-", "");
+            string[] delimiters = new string[] { "55AAAA55" };
+            string[] strArray = bytesString.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-                new Thread(new ThreadStart(BeginRead)).Start();
-            }
-            catch
+            foreach (string str in strArray)
             {
-                GameServerManager.GetInstance().RemoveClient(this);
-                Log.Error("Lost connection from gameserver");
+                handlePacket(str.ToBytes());
             }
+
+            new Thread(new ThreadStart(BeginRead)).Start();
         }
 
         public void Send(byte[] bytes)
@@ -73,11 +69,11 @@ namespace LoginServer.Network.GameServer
             _stream.BeginWrite(bytes, 0, bytes.Length, WriteCallback, null);
         }
 
-        public void SendPacket(GSASendPacket packet)
+        public void SendPacket(ASendPacket packet)
         {
             packet._Client = this;
 
-            if (!GSOpcode.Send.ContainsKey(packet.GetType()))
+            if (!Opcode.Send.ContainsKey(packet.GetType()))
             {
                 Log.Warn("UNKNOWN GS packet opcode: {0}", packet.GetType().Name);
                 return;
@@ -85,7 +81,7 @@ namespace LoginServer.Network.GameServer
 
             try
             {
-                packet.WriteH(GSOpcode.Send[packet.GetType()]); // opcode
+                packet.WriteH(Opcode.Send[packet.GetType()]); // opcode
                 packet.WriteH(0); // packet len
                 packet.Write();
 
@@ -111,18 +107,18 @@ namespace LoginServer.Network.GameServer
 
         private void handlePacket(byte[] Data)
         {
-            //Log.Debug("Recv Handle: {0}", Data.FormatHex());
+            Log.Debug("Recv Handle: {0}", Data.FormatHex());
 
             short opcode = BitConverter.ToInt16(new byte[2] { Data[0], Data[1] }, 0);
 
-            if (GSOpcode.Recv.ContainsKey(opcode))
+            if (Opcode.Recv.ContainsKey(opcode))
             {
-                ((GSARecvPacket)Activator.CreateInstance(GSOpcode.Recv[opcode])).execute(this, Data);
+                ((ARecvPacket)Activator.CreateInstance(Opcode.Recv[opcode])).execute(this, Data);
             }
             else
             {
                 string opCodeLittleEndianHex = BitConverter.GetBytes(opcode).ToHex();
-                Log.Debug("Unknown GS Opcode: 0x{0}{1} [{2}]",
+                Log.Debug("Unknown Opcode: 0x{0}{1} [{2}]",
                                  opCodeLittleEndianHex.Substring(2),
                                  opCodeLittleEndianHex.Substring(0, 2),
                                  Data.Length);

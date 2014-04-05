@@ -67,7 +67,7 @@
     <Compile Include="Network\GameServer\GSARecvPacket.cs" />
     <Compile Include="Network\GameServer\GSASendPacket.cs" />
     <Compile Include="Network\GameServer\GSClient.cs" />
-    <Compile Include="Network\GameServer\GSClientManager.cs" />
+    <Compile Include="Network\GameServer\GameServerManager.cs" />
     <Compile Include="Network\GameServer\GSNetworkFactory.cs" />
     <Compile Include="Network\GameServer\GSOpcode.cs" />
     <Compile Include="Network\GameServer\Recv\GSResRegistServer.cs" />

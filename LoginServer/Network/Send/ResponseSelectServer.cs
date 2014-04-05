@@ -10,13 +10,8 @@ namespace LoginServer.Network.Send
 
         public ResponseSelectServer(int sid, int cid)
         {
-            server = LoginServer.ServerList
-                .Where(s => s.Id == sid)
-                .FirstOrDefault();
-
-            channel = server.Channels
-                .Where(c => c.Id == cid)
-                .FirstOrDefault();
+            server = LoginServer.ServerList[sid];
+            channel = server.Channels[cid];
         }
 
         protected internal override void Write()

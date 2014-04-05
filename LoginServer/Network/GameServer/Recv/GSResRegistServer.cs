@@ -24,10 +24,10 @@ namespace LoginServer.Network.GameServer.Recv
                 int max = ReadD();
                 int curr = ReadD();
                 ChannelStruct channel = new ChannelStruct(id, name, port, type, max, curr);
-                server.Channels.Add(channel);
+                server.Channels.Add(channel.Id, channel);
             }
 
-            LoginServer.ServerList.Add(server);
+            LoginServer.ServerList.Add(server.Id, server);
         }
 
         protected internal override void Run()

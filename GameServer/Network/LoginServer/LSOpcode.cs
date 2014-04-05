@@ -12,7 +12,7 @@ namespace GameServer.Network.LoginServer
 
         public static void Init()
         {
-            //Recv.Add(unchecked((short)0x0002), typeof(LSReqUserOnlineCount));
+            Recv.Add(unchecked((short)0x0002), typeof(LSReqUserOnlineCount));
 
 
             Send.Add(typeof(GSReqRegistServer), unchecked((short)0x0001));

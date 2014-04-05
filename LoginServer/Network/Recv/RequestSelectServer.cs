@@ -17,9 +17,7 @@ namespace LoginServer.Network.Recv
 
         protected internal override void Run()
         {
-            var server = LoginServer.ServerList
-                .Where(s => s.Id == serverId)
-                .FirstOrDefault();
+            var server = LoginServer.ServerList[serverId];
 
             if (server.IsUseAtKey && !_Client._Account.HasAKey)
                 _Client.SendPacket(new ResponseLogin(AuthResponse.NoAtKey));

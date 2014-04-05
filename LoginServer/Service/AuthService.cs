@@ -1,6 +1,8 @@
-﻿using LoginServer.Config;
+﻿using Common.Utilities;
+using LoginServer.Config;
 using LoginServer.Database;
 using LoginServer.Model.Account;
+using System.Linq;
 
 namespace LoginServer.Service
 {
@@ -52,6 +54,13 @@ namespace LoginServer.Service
             }
 
             return result;
+        }
+
+        public void UpdateChannelCurrentUserCount(int srvId, int chnId, int count)
+        {
+            var channel = LoginServer.ServerList[srvId].Channels[chnId];
+            channel.CurrentUser = count;
+            LoginServer.ServerList[srvId].Channels[chnId] = channel;
         }
     }
 }

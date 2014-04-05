@@ -1,4 +1,6 @@
 ﻿using Common.Model.Server;
+using Common.Utilities;
+using System.Linq;
 
 namespace LoginServer.Network.Send
 {
@@ -8,7 +10,7 @@ namespace LoginServer.Network.Send
         {
             WriteH(LoginServer.ServerList.Count);
 
-            foreach(ServerStruct server in LoginServer.ServerList)
+            foreach(ServerStruct server in LoginServer.ServerList.Values)
             {
                 WriteH(server.Id);
                 WriteS(server.Name);
@@ -16,12 +18,11 @@ namespace LoginServer.Network.Send
                 WriteH(0);
                 WriteH(1);
                 WriteH(server.Channels.Count);
-                for(int i = 0; i < server.Channels.Count; i++)
+                foreach (var channel in server.Channels.Values.ToList())
                 {
-                    var channel = server.Channels[i];
-                    int online = 0; // todo get user online in channel
+                    int online = channel.CurrentUser; // todo get user online in channel
                     int percent = ((online * 100) / channel.MaxUser);
-                    WriteH((i + 1));
+                    WriteH(channel.Id);
                     WriteS(channel.Name);
                     WriteH(percent);
                     WriteH(channel.Type);

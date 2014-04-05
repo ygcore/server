@@ -1,4 +1,5 @@
 ﻿using GameServer.Config;
+using GameServer.Network;
 using GameServer.Network.LoginServer;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace GameServer
     {
         static void Main(string[] args)
         {
-            Console.Title = "----===== YGCore GameServer =====----";
+            Console.Title = "YGCore GameServer";
             Console.WriteLine("Authors: Jenose\n"
                               + "Authorized representative: netgame.in.th\n\n"
                               + "-------------------------------------------\n");
@@ -23,7 +24,11 @@ namespace GameServer
 
             Configuration.GetInstance();
 
+            ClientManager.GetInstance();
             LSClient.GetInstance();
+
+            foreach(var channel in Configuration.GetInstance().Channels)
+                NetworkFactory.NewInstance(channel.Port);
 
             sw.Stop();
 

@@ -51,7 +51,7 @@ namespace LoginServer.Network.GameServer
 
         private void Accept(TcpClient tcpClient)
         {
-            GSClientManager.GetInstance().AddClient(tcpClient);
+            GameServerManager.GetInstance().AddClient(tcpClient);
         }
     }
 }

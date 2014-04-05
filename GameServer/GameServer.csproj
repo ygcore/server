@@ -58,6 +58,10 @@
     <Compile Include="Config\NetworkStruct.cs" />
     <Compile Include="Config\SettingStruct.cs" />
     <Compile Include="GameServer.cs" />
+    <Compile Include="Network\ARecvPacket.cs" />
+    <Compile Include="Network\ASendPacket.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientManager.cs" />
     <Compile Include="Network\LoginServer\LSARecvPacket.cs" />
     <Compile Include="Network\LoginServer\LSASendPacket.cs" />
     <Compile Include="Network\LoginServer\LSClient.cs" />
@@ -65,6 +69,8 @@
     <Compile Include="Network\LoginServer\Recv\LSReqUserOnlineCount.cs" />
     <Compile Include="Network\LoginServer\Send\GSReqRegistServer.cs" />
     <Compile Include="Network\LoginServer\Send\GSResUserOnlineCount.cs" />
+    <Compile Include="Network\NetworkFactory.cs" />
+    <Compile Include="Network\Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +95,10 @@
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Network\Recv\" />
+    <Folder Include="Network\Send\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

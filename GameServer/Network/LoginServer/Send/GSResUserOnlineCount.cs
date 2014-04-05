@@ -1,4 +1,6 @@
 ﻿using Common.Model.Server;
+using Common.Utilities;
+using GameServer.Config;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,14 @@ namespace GameServer.Network.LoginServer.Send
 
         protected internal override void Write()
         {
-            
+            WriteD(Configuration.Setting.ServerId);
+            WriteH(Configuration.GetInstance().Channels.Count);
+            foreach (ChannelStruct channel in Configuration.GetInstance().Channels)
+            {
+                int online = ClientManager.GetInstance().GetUserOnlineCount(channel.Id);
+                WriteH(channel.Id);
+                WriteD(online);
+            }
         }
     }
 }

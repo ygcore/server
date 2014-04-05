@@ -12,7 +12,7 @@ namespace Common.Model.Server
 
         public bool IsUseAtKey;
 
-        public List<ChannelStruct> Channels;
+        public Dictionary<int, ChannelStruct> Channels;
 
         public ServerStruct(int id, string name, string addr, bool usekey)
         {
@@ -20,7 +20,7 @@ namespace Common.Model.Server
             Name = name;
             Address = addr;
             IsUseAtKey = usekey;
-            Channels = new List<ChannelStruct>();
+            Channels = new Dictionary<int, ChannelStruct>();
         }
     }
 }

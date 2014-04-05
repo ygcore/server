@@ -14,11 +14,11 @@ namespace LoginServer
 {
     internal class LoginServer
     {
-        public static List<ServerStruct> ServerList = new List<ServerStruct>();
+        public static Dictionary<int, ServerStruct> ServerList = new Dictionary<int, ServerStruct>();
 
         static void Main(string[] args)
         {
-            Console.Title = "----===== YGCore LoginServer =====----";
+            Console.Title = "YGCore LoginServer";
             Console.WriteLine("Authors: Jenose\n"
                               + "Authorized representative: netgame.in.th\n\n"
                               + "-------------------------------------------\n");
@@ -28,7 +28,7 @@ namespace LoginServer
             Configuration.GetInstance();
 
             ClientManager.GetInstance();
-            GSClientManager.GetInstance();
+            GameServerManager.GetInstance();
             GSNetworkFactory.GetInstance();
             NetworkFactory.GetInstance();
 

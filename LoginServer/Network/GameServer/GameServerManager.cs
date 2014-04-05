@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace LoginServer.Network.GameServer
 {
-    internal class GSClientManager
+    internal class GameServerManager
     {
-        private static GSClientManager Instance = new GSClientManager();
+        private static GameServerManager Instance = new GameServerManager();
         private List<GSClient> _Clients = new List<GSClient>();
 
-        static GSClientManager()
+        static GameServerManager()
         {
         }
 
-        public GSClientManager()
+        public GameServerManager()
         {
-            Log.Info("ClientManager Loaded");
+            Log.Info("GameServerManager Loaded");
         }
 
-        public static GSClientManager GetInstance()
+        public static GameServerManager GetInstance()
         {
-            return GSClientManager.Instance;
+            return GameServerManager.Instance;
         }
 
         public void AddClient(TcpClient tcp)
