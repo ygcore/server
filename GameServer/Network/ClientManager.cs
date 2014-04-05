@@ -13,6 +13,8 @@ namespace GameServer.Network
         private static ClientManager Instance = new ClientManager();
         private Dictionary<int, List<Client>> _Clients = new Dictionary<int, List<Client>>();
 
+        private IDFactory IDFactory;
+
         static ClientManager()
         {
         }
@@ -22,7 +24,8 @@ namespace GameServer.Network
             foreach(ChannelStruct chn in Configuration.GetInstance().Channels)
             {
                 _Clients.Add(chn.Id, new List<Client>());
-            }  
+            }
+            IDFactory = new IDFactory(0);
             Log.Info("ClientManager Loaded");
         }
 
@@ -42,6 +45,7 @@ namespace GameServer.Network
                 .Select(v => v.Id).FirstOrDefault();
 
             Client client = new Client(tcp);
+            client.SessID = (short)IDFactory.GetNext();
             
             if (_Clients[chnId].Contains(client))
                 Log.Warn("Client is already exists!");

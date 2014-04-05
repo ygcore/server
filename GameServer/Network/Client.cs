@@ -1,4 +1,6 @@
 ﻿using Common.Utilities;
+using GameServer.Config;
+using GameServer.Model.Account;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -12,6 +14,9 @@ namespace GameServer.Network
         public TcpClient _client;
         public NetworkStream _stream;
         private byte[] _buffer;
+
+        public short SessID;
+        public Account _Account;
 
         public Client(TcpClient client)
         {
@@ -47,20 +52,34 @@ namespace GameServer.Network
 
         private void OnReceiveCallback(IAsyncResult ar)
         {
-            int length = _stream.EndRead(ar);
-            byte[] data = new byte[length - 4];
-            Buffer.BlockCopy(_buffer, 2, data, 0, length - 4);
-
-            string bytesString = BitConverter.ToString(data).Replace("-", "");
-            string[] delimiters = new string[] { "55AAAA55" };
-            string[] strArray = bytesString.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string str in strArray)
+            try
             {
-                handlePacket(str.ToBytes());
-            }
+                int length = _stream.EndRead(ar);
 
-            new Thread(new ThreadStart(BeginRead)).Start();
+                if (length <= 0)
+                    return;
+
+                byte[] data = new byte[length - 4];
+                Buffer.BlockCopy(_buffer, 2, data, 0, length - 4);
+
+                string bytesString = BitConverter.ToString(data).Replace("-", "");
+                string[] delimiters = new string[] { "55AAAA55" };
+                string[] strArray = bytesString.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string str in strArray)
+                {
+                    handlePacket(str.ToBytes());
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.WarnException("OnReceiveCallback", ex);
+                close();
+            }
+            finally
+            {
+                new Thread(new ThreadStart(BeginRead)).Start();
+            }
         }
 
         public void Send(byte[] bytes)
@@ -81,14 +100,19 @@ namespace GameServer.Network
 
             try
             {
-                packet.WriteH(Opcode.Send[packet.GetType()]); // opcode
                 packet.WriteH(0); // packet len
+                packet.WriteH(SessID); // session
+                packet.WriteH(Opcode.Send[packet.GetType()]); // opcode
+                packet.WriteH(0); // data len
                 packet.Write();
 
                 byte[] Data = packet.ToByteArray();
-                BitConverter.GetBytes((short)(Data.Length - 4)).CopyTo(Data, 2);
+                BitConverter.GetBytes((short)(Data.Length - 2)).CopyTo(Data, 0);
+                BitConverter.GetBytes((short)(Data.Length - 8)).CopyTo(Data, 6);
 
-                //if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                Funcs.WriteScope(ref Data);
+
+                if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
                 _stream = _client.GetStream();
                 _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
             }
@@ -107,9 +131,9 @@ namespace GameServer.Network
 
         private void handlePacket(byte[] Data)
         {
-            Log.Debug("Recv Handle: {0}", Data.FormatHex());
+            if (Configuration.Setting.Debug) Log.Debug("Recv: {0}", Data.FormatHex());
 
-            short opcode = BitConverter.ToInt16(new byte[2] { Data[0], Data[1] }, 0);
+            short opcode = BitConverter.ToInt16(new byte[2] { Data[4], Data[5] }, 0);
 
             if (Opcode.Recv.ContainsKey(opcode))
             {
@@ -118,12 +142,12 @@ namespace GameServer.Network
             else
             {
                 string opCodeLittleEndianHex = BitConverter.GetBytes(opcode).ToHex();
-                Log.Debug("Unknown Opcode: 0x{0}{1} [{2}]",
+                Log.Warn("Unknown Opcode: 0x{0}{1} [{2}]",
                                  opCodeLittleEndianHex.Substring(2),
                                  opCodeLittleEndianHex.Substring(0, 2),
                                  Data.Length);
 
-                Log.Debug("Data:\n{0}", Data.FormatHex());
+                Log.Warn("Data:\n{0}", Data.FormatHex());
             }
         }
     }

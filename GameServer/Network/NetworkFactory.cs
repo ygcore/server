@@ -32,7 +32,6 @@ namespace GameServer.Network
             try
             {
                 int port = (int)parameter;
-                Opcode.Init();
                 NetworkListener = new TcpListener(IPAddress.Parse(Configuration.Network.PublicIp), port);
                 NetworkListener.Start();
                 Log.Info("Server listening clients at {0}:{1}...", ((IPEndPoint)NetworkListener.LocalEndpoint).Address, port);

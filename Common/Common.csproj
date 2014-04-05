@@ -49,6 +49,7 @@
     <Compile Include="Model\Server\ServerStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\Funcs.cs" />
+    <Compile Include="Utilities\IDFactory.cs" />
     <Compile Include="Utilities\Log.cs" />
   </ItemGroup>
   <ItemGroup>

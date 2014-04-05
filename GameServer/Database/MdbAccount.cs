@@ -1,9 +1,10 @@
-﻿using LoginServer.Config;
-using LoginServer.Model.Account;
+﻿using GameServer.Config;
+using GameServer.Model.Account;
+using GameServer.Model.Character;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
-namespace LoginServer.Database
+namespace GameServer.Database
 {
     public class MdbAccount
     {
@@ -44,7 +45,8 @@ namespace LoginServer.Database
         public void UpdateAccount(Account acc)
         {
             var query = Query<Account>.EQ(e => e.Id, acc.Id);
-            var update = Update<Account>.Set(e => e, acc); // update modifiers
+            var update = Update<Account>
+                .Set(e => e.LastAddress, acc.LastAddress);
             m_Collection.Update(query, update);
         }
     }

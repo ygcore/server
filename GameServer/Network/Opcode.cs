@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GameServer.Network.Recv;
+using GameServer.Network.Send;
+using System;
 using System.Collections.Generic;
 
 namespace GameServer.Network
@@ -10,7 +12,11 @@ namespace GameServer.Network
 
         public static void Init()
         {
+            Recv.Add(unchecked((short)0x0001), typeof(RequestAuth));
+            Recv.Add(unchecked((short)0x0010), typeof(RequestCharacterList));
+            
 
+            Send.Add(typeof(ResponseAuth), unchecked((short)0x0002));
         }
     }
 }

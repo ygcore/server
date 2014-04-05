@@ -21,9 +21,9 @@ namespace GameServer
                               + "-------------------------------------------\n");
 
             Stopwatch sw = Stopwatch.StartNew();
+            Opcode.Init();
 
             Configuration.GetInstance();
-
             ClientManager.GetInstance();
             LSClient.GetInstance();
 

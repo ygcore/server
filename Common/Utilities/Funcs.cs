@@ -7,12 +7,38 @@ namespace Common.Utilities
     public static class Funcs
     {
         private static readonly string[] Baths;
+        private static readonly DateTime StaticDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly Random Randomizer = new Random((int)DateTime.Now.Ticks);
 
         static Funcs()
         {
             Baths = new string[256];
             for (int i = 0; i < 256; i++)
                 Baths[i] = String.Format("{0:X2}", i);
+        }
+
+        public static Random Random()
+        {
+            return Randomizer;
+        }
+
+        public static byte[] NextBytes(int len)
+        {
+            byte[] rand = new byte[len];
+            Random().NextBytes(rand);
+            return rand;
+        }
+
+        public static int GetRoundedLocal()
+        {
+            // ReSharper disable PossibleLossOfFraction
+            return (int)Math.Round((double)(GetCurrentMilliseconds() / 1000));
+            // ReSharper restore PossibleLossOfFraction
+        }
+
+        public static long GetCurrentMilliseconds()
+        {
+            return (long)(DateTime.Now - StaticDate).TotalMilliseconds;
         }
 
         public static string ToHex(this byte[] array)
@@ -81,6 +107,17 @@ namespace Common.Utilities
             sb.Append("        |---------------------------------------------|  |--------------|");
 
             return sb.ToString();
+        }
+
+        public static void WriteScope(ref byte[] Data)
+        {
+            byte[] start_scope = new byte[2] { 0xAA, 0x55 };
+            byte[] end_scope = new byte[2] { 0x55, 0xAA };
+            byte[] buffer = new byte[Data.Length + 4];
+            Buffer.BlockCopy(start_scope, 0, buffer, 0, 2);
+            Buffer.BlockCopy(Data, 0, buffer, 2, Data.Length);
+            Buffer.BlockCopy(end_scope, 0, buffer, Data.Length + 2, 2);
+            Data = buffer;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace GameServer.Network
         {
             _Client = Client;
             _buffer = buffer;
-            _offset = 4;
+            _offset = 8;
             Read();
             Run();
         }
@@ -109,6 +109,38 @@ namespace GameServer.Network
         {
             this._offset = this._offset + in_offset;
             Log.Trace("Ignore {0} bytes", in_offset);
+        }
+
+        protected internal int PacketLength
+        {
+            get
+            {
+                return BitConverter.ToInt16(new byte[2] { _buffer[0], _buffer[1] }, 0);
+            }
+        }
+
+        protected internal int SessionId
+        {
+            get
+            {
+                return BitConverter.ToInt16(new byte[2] { _buffer[2], _buffer[3] }, 0);
+            }
+        }
+
+        protected internal int Opcode
+        {
+            get
+            {
+                return BitConverter.ToInt16(new byte[2] { _buffer[4], _buffer[5] }, 0);
+            }
+        }
+
+        protected internal int DataLength
+        {
+            get
+            {
+                return BitConverter.ToInt16(new byte[2] { _buffer[6], _buffer[7] }, 0);
+            }
         }
 
         protected internal abstract void Read();
