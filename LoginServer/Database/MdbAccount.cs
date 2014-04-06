@@ -44,7 +44,8 @@ namespace LoginServer.Database
         public void UpdateAccount(Account acc)
         {
             var query = Query<Account>.EQ(e => e.Id, acc.Id);
-            var update = Update<Account>.Set(e => e, acc); // update modifiers
+            var update = Update<Account>
+                .Set(e => e.LastAddress, acc.LastAddress);
             m_Collection.Update(query, update);
         }
     }

@@ -31,6 +31,7 @@ namespace GameServer.Network.Recv
             _Client._Account = AuthService.GetInstance().AuthAccount(Name, Md5Pass);
             if (_Client._Account != null)
             {
+                _Client._Account._Client = _Client;
                 _Client._Account.LastAddress = IpAddress;
                 MdbAccount.GetInstance().UpdateAccount(_Client._Account);
                 _Client.SendPacket(new ResponseAuth());

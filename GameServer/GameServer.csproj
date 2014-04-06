@@ -81,8 +81,10 @@
     <Compile Include="Network\Recv\RequestAuth.cs" />
     <Compile Include="Network\Recv\RequestCharacterList.cs" />
     <Compile Include="Network\Send\ResponseAuth.cs" />
+    <Compile Include="Network\Send\ResponseCharacterList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AuthService.cs" />
+    <Compile Include="Service\CharacterService.cs" />
     <Compile Include="Service\MapService.cs" />
   </ItemGroup>
   <ItemGroup>

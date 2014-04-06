@@ -17,6 +17,7 @@ namespace GameServer.Network
             
 
             Send.Add(typeof(ResponseAuth), unchecked((short)0x0002));
+            Send.Add(typeof(ResponseCharacterList), unchecked((short)0x0011));
         }
     }
 }

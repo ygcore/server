@@ -1,5 +1,6 @@
 ﻿using GameServer.Database;
 using GameServer.Model.Character;
+using GameServer.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace GameServer.Network.Recv
 
         protected internal override void Run()
         {
-            
+            CharacterService.GetInstance().SendCharacterList(_Client._Account);
         }
     }
 }

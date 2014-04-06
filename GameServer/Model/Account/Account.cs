@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using GameServer.Network;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +20,8 @@ namespace GameServer.Model.Account
         public string LastAddress { get; set; }
 
         public bool HasAKey { get; set; }
+
+        [BsonIgnore]
+        public Client _Client { get; set; }
     }
 }
