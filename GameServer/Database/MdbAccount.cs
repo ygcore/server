@@ -20,14 +20,14 @@ namespace GameServer.Database
         private MongoDatabase m_Database;
         private MongoCollection<Account> m_Collection;
 
-        private string MDBAccountTable = "accounts";
+        private string MDBTable = "accounts";
 
         public MdbAccount()
         {
             m_Client = new MongoClient(Configuration.Database.Url);
             m_Server = m_Client.GetServer();
             m_Database = m_Server.GetDatabase(Configuration.Database.Name);
-            m_Collection = m_Database.GetCollection<Account>(MDBAccountTable);
+            m_Collection = m_Database.GetCollection<Account>(MDBTable);
         }
 
         public Account GetAccountByName(string name)

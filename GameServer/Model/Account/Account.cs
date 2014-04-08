@@ -1,11 +1,7 @@
 ﻿using GameServer.Network;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Model.Account
 {
@@ -23,5 +19,8 @@ namespace GameServer.Model.Account
 
         [BsonIgnore]
         public Client _Client { get; set; }
+
+        [BsonIgnore]
+        public Dictionary<int, Character.Character> _Characters { get; set; }
     }
 }

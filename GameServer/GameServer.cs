@@ -1,6 +1,8 @@
 ﻿using GameServer.Config;
+using GameServer.DataHolder;
 using GameServer.Network;
 using GameServer.Network.LoginServer;
+using GameServer.Service;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,9 +23,13 @@ namespace GameServer
                               + "-------------------------------------------\n");
 
             Stopwatch sw = Stopwatch.StartNew();
-            Opcode.Init();
 
+            Opcode.Init();
             Configuration.GetInstance();
+            Data.LoadAll();
+
+            StatsService.GetInstance();
+
             ClientManager.GetInstance();
             LSClient.GetInstance();
 
