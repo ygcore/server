@@ -1,6 +1,7 @@
 ﻿using Common.Utilities;
 using GameServer.Config;
 using GameServer.Model.Account;
+using GameServer.Model.Character;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -17,6 +18,7 @@ namespace GameServer.Network
 
         public short SessID;
         public Account _Account;
+        public Character _Char;
 
         public Client(TcpClient client)
         {

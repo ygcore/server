@@ -2,12 +2,18 @@
 {
     public class MapPosition
     {
-        public int MapId;
+        public int MapId { get; set; }
 
-        public float X;
+        public byte[] X { get; set; }
 
-        public float Y;
+        public byte[] Y { get; set; }
 
-        public float Z;
+        public byte[] Z { get; set; }
+
+        public byte[] oldX { get; set; }
+
+        public byte[] oldY { get; set; }
+
+        public byte[] oldZ { get; set; }
     }
 }

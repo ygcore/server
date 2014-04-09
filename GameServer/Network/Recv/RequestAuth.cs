@@ -1,11 +1,8 @@
 ﻿using GameServer.Database;
+using GameServer.Model.Account;
 using GameServer.Network.Send;
 using GameServer.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Network.Recv
 {
@@ -33,6 +30,7 @@ namespace GameServer.Network.Recv
             {
                 _Client._Account._Client = _Client;
                 _Client._Account.LastAddress = IpAddress;
+                _Client._Account.Setting = new AccountSetting();
                 MdbAccount.GetInstance().UpdateAccount(_Client._Account);
                 _Client.SendPacket(new ResponseAuth());
             }

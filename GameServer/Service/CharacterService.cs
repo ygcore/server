@@ -4,6 +4,7 @@ using GameServer.Database;
 using GameServer.Model.Account;
 using GameServer.Model.Character;
 using GameServer.Network.Send;
+using System;
 
 namespace GameServer.Service
 {
@@ -44,9 +45,12 @@ namespace GameServer.Service
             Character.Position = new Model.Map.MapPosition()
                 {
                     MapId = 101,
-                    X = 300.0F,
-                    Y = 1865.0F,
-                    Z = 15.0F,
+                    X = BitConverter.GetBytes(300.0F),
+                    Y = BitConverter.GetBytes(1865.0F),
+                    Z = BitConverter.GetBytes(15.0F),
+                    oldX = new byte[0],
+                    oldY = new byte[0],
+                    oldZ = new byte[0],
                 };
 
             MdbCharacter.GetInstance().AddCharacter(Character);
@@ -62,6 +66,17 @@ namespace GameServer.Service
             bool result = MdbCharacter.GetInstance().DeleteCharacter(charname);
 
             account._Client.SendPacket(new ResponseDeleteCharacter(result));
+        }
+
+        internal void CharacterEnterGame(Network.Client _Client)
+        {
+            Character character = _Client._Char;
+
+            new ResponseServerTime(0).Send(_Client);
+            new ResponseRunning().Send(_Client);
+            new ResponseCharacterInfo(character).Send(_Client);
+            
+            new ResponseSetBuff(2, 1, 1).Send(_Client);
         }
     }
 }

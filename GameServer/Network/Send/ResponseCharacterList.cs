@@ -55,9 +55,9 @@ namespace GameServer.Network.Send
                 WriteC((byte)character.Title);
                 WriteC((byte)character.Gender);
 
-                WriteF(character.Position.X);
-                WriteF(character.Position.Z);
-                WriteF(character.Position.Y);
+                WriteB(character.Position.X);
+                WriteB(character.Position.Z);
+                WriteB(character.Position.Y);
                 WriteD(character.Position.MapId);
 
                 WriteB(new byte[12]);

@@ -1,4 +1,6 @@
-﻿using GameServer.Model.Item;
+﻿using Common.Utilities;
+using GameServer.Config;
+using GameServer.Model.Item;
 using System;
 using System.IO;
 using System.Text;
@@ -10,6 +12,41 @@ namespace GameServer.Network
         private MemoryStream mstream = new MemoryStream();
 
         public Client _Client;
+
+        public void Send(Client c)
+        {
+            _Client = c;
+
+            if (!Opcode.Send.ContainsKey(GetType()))
+            {
+                Log.Warn("UNKNOWN GS packet opcode: {0}", GetType().Name);
+                return;
+            }
+
+            try
+            {
+                WriteH(0); // packet len
+                WriteH(_Client.SessID); // session
+                WriteH(Opcode.Send[GetType()]); // opcode
+                WriteH(0); // data len
+                Write();
+
+                byte[] Data = ToByteArray();
+                BitConverter.GetBytes((short)(Data.Length - 2)).CopyTo(Data, 0);
+                BitConverter.GetBytes((short)(Data.Length - 8)).CopyTo(Data, 6);
+
+                if (Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+
+                Funcs.WriteScope(ref Data);
+                _Client.Send(Data);
+            }
+            catch (Exception ex)
+            {
+                Log.Warn("Can't send packet: {0}", GetType().Name);
+                Log.WarnException("ASendPacket", ex);
+                return;
+            }
+        }
 
         public long Length
         {
