@@ -1,4 +1,5 @@
 ﻿using GameServer.Model.Character;
+using GameServer.Model.Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ namespace GameServer.Network.Send
                 WriteC(0);
                 WriteH(0);
 
-                WriteH(1);
+                WriteH(0);
                 WriteH(character.Level);
 
                 WriteC((byte)character.Forces);
@@ -63,7 +64,8 @@ namespace GameServer.Network.Send
 
                 WriteB(character.NameStyle);
 
-                WriteB(new byte[4]);
+                WriteB(new byte[8]);
+
                 WriteH(character.GameStats.HpBase); // MaxHp
                 WriteH(character.GameStats.MpBase); // MaxMp
                 WriteD(character.GameStats.SpBase); // MaxSp
@@ -77,11 +79,23 @@ namespace GameServer.Network.Send
                 WriteD(0);
                 WriteB(new byte[16]);
 
-                /*var Equiped = character.Inventory.EquipItems.Values.ToList();
-                foreach (var item in Equiped)
+                for (int i = 0; i < 30; i++ )
                 {
-                    WriteItemInfo(writer, item);
-                }*/
+                    StorageItem item;
+                    try
+                    {
+                        item = character.Equipment.Items.Values.ToList()[i];
+                    }
+                    catch
+                    {
+                        item = null;
+                    }
+
+                    if (item == null)
+                        WriteB(new byte[88]);
+                    else
+                        WriteItemInfo(item);
+                }
             }
         }
     }

@@ -13,5 +13,7 @@ namespace LoginServer.Model.Account
         public string LastAddress { get; set; }
 
         public bool HasAKey { get; set; }
+
+        public string DeletePasswd { get; set; }
     }
 }

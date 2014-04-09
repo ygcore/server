@@ -1,4 +1,5 @@
 ﻿
+using GameServer.Model.Item;
 using GameServer.Model.Map;
 namespace GameServer.Model.Character
 {
@@ -9,8 +10,6 @@ namespace GameServer.Model.Character
         public int ServerId { get; set; }
 
         public string Name { get; set; }
-
-        public MapPosition Position { get; set; }
 
         #region Info
         // ----- Info ----- //
@@ -67,5 +66,11 @@ namespace GameServer.Model.Character
 
         // ----- Appearance ----- //
         #endregion
+
+        public MapPosition Position { get; set; }
+
+        public Storage Inventory = new Storage { StorageType = StorageType.Inventory };
+
+        public Storage Equipment = new Storage { StorageType = StorageType.Equipment };
     }
 }

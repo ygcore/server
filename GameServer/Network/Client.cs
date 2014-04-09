@@ -56,9 +56,6 @@ namespace GameServer.Network
             {
                 int length = _stream.EndRead(ar);
 
-                if (length <= 0)
-                    return;
-
                 byte[] data = new byte[length - 4];
                 Buffer.BlockCopy(_buffer, 2, data, 0, length - 4);
 
@@ -73,7 +70,8 @@ namespace GameServer.Network
             }
             catch(Exception ex)
             {
-                Log.WarnException("OnReceiveCallback", ex);
+                Log.Warn("Client Disconnected");
+                //Log.WarnException("OnReceiveCallback", ex);
                 close();
             }
             finally
@@ -110,16 +108,16 @@ namespace GameServer.Network
                 BitConverter.GetBytes((short)(Data.Length - 2)).CopyTo(Data, 0);
                 BitConverter.GetBytes((short)(Data.Length - 8)).CopyTo(Data, 6);
 
-                Funcs.WriteScope(ref Data);
+                if (Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
 
-                if(Configuration.Setting.Debug) Log.Debug("Send: {0}", Data.FormatHex());
+                Funcs.WriteScope(ref Data);
                 _stream = _client.GetStream();
                 _stream.BeginWrite(Data, 0, Data.Length, new AsyncCallback(WriteCallback), (object)null);
             }
             catch (Exception ex)
             {
-                Log.Warn("Can't send GS packet: {0}", GetType().Name);
-                Log.WarnException("GSASendPacket", ex);
+                Log.Warn("Can't send packet: {0}", GetType().Name);
+                Log.WarnException("ASendPacket", ex);
                 return;
             }
         }

@@ -60,5 +60,12 @@ namespace GameServer.Database
             long num = m_Collection.Find(query).Count();
             return (num <= 0) ? true : false;
         }
+
+        internal bool DeleteCharacter(string name)
+        {
+            var query = Query<Character>.EQ(c => c.Name, name);
+            var result = m_Collection.Remove(query);
+            return result.Ok;
+        }
     }
 }

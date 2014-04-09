@@ -71,6 +71,7 @@
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Model\Item\Storage.cs" />
     <Compile Include="Model\Item\StorageItem.cs" />
+    <Compile Include="Model\Item\StorageType.cs" />
     <Compile Include="Model\Map\Map.cs" />
     <Compile Include="Model\Map\MapPosition.cs" />
     <Compile Include="Network\ARecvPacket.cs" />
@@ -90,10 +91,12 @@
     <Compile Include="Network\Recv\RequestCharacterList.cs" />
     <Compile Include="Network\Recv\RequestCheckName.cs" />
     <Compile Include="Network\Recv\RequestCreateCharacter.cs" />
+    <Compile Include="Network\Recv\RequestDeleteCharacter.cs" />
     <Compile Include="Network\Send\ResponseAuth.cs" />
     <Compile Include="Network\Send\ResponseCharacterList.cs" />
     <Compile Include="Network\Send\ResponseCheckName.cs" />
     <Compile Include="Network\Send\ResponseCreateCharacter.cs" />
+    <Compile Include="Network\Send\ResponseDeleteCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AuthService.cs" />
     <Compile Include="Service\CharacterService.cs" />

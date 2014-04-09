@@ -53,5 +53,15 @@ namespace GameServer.Service
 
             account._Client.SendPacket(new ResponseCreateCharacter(1));
         }
+
+        internal void DeleteCharacter(Account account, string deletepw, string charname)
+        {
+            if (account.DeletePasswd != deletepw)
+                account._Client.SendPacket(new ResponseDeleteCharacter(false));
+
+            bool result = MdbCharacter.GetInstance().DeleteCharacter(charname);
+
+            account._Client.SendPacket(new ResponseDeleteCharacter(result));
+        }
     }
 }

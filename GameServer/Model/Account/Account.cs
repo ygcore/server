@@ -17,6 +17,8 @@ namespace GameServer.Model.Account
 
         public bool HasAKey { get; set; }
 
+        public string DeletePasswd { get; set; }
+
         [BsonIgnore]
         public Client _Client { get; set; }
 

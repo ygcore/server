@@ -45,6 +45,7 @@ namespace LoginServer.Service
                         Name = login,
                         Password = password,
                         LastAddress = "0.0.0.0",
+                        DeletePasswd = "0000000000",
                     };
                     MdbAccount.GetInstance().AddAccount(account);
                     result = AuthResponse.Success;
